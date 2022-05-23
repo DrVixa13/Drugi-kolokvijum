@@ -1,0 +1,60 @@
+﻿Пример 3. Написати прогам у програмском језику C који за неку тачку која се уноси и
+произвољан полигон који се задаје преко укупног броја тачака и његових X и Y
+координата одређује да ли се задата тачка налази или не у полигону. Претпоставка је да
+је полигон увек конвексан.
+
+#include<stdio.h>
+#include<math.h>
+#define PI 4*atan(1)
+
+void main()
+{
+	int n, i;
+	double X[100], Y[100], x, y, ax[100], ay[100];
+	double tol = 1.e-3;
+	double cosinus[100], intenzitet[100], ugao[100], zbir_uglova = 0;
+
+	printf("unesi broj tacaka poligona:\t");
+	scanf("%d", &n);
+
+	for (i = 1; i <= n; i++)
+	{
+		printf("tacka %d\n", i);
+		printf("unesi kordinatu x%d:\t", i);
+		scanf("%lf", &X[i]);
+		printf("unesi kordinatu y%d:\t", i);
+		scanf("%lf", &Y[i]);
+	}
+	printf("uneti kordinate zeljene tacke:\n");
+	printf("x=");
+	scanf("%lf", &x);
+	printf("y=");
+	scanf("%lf", &y);
+
+	for (i = 1; i <= n; i++) //izracunavanje intenziteta:
+	{
+		ax[i] = X[i] - x;
+		ay[i] = Y[i] - y;
+		intenzitet[i] = sqrt(ax[i] * ax[i] + ay[i] * ay[i]);
+	}
+
+	for (i = 1; i <= n - 1; i++) //izracunavanje kosinusa:
+	{
+		cosinus[i] = (ax[i]*ax[i+1] + ay[i]*y[i+1]) / (intenzitet[i]*intenzitet[i+1]);
+	}
+
+	cosinus[n] = (ax[1] * ax[n] + ay[1] * ay[n]) / (intenzitet[1] * intenzitet[n]);
+
+	for (i = 1;i <= n;i++) //izracunavanje uglova:
+	{
+		ugao[i] = acos(cosinus[i]);
+		zbir_uglova += ugao[i];
+	}
+
+	if (fabs(2 * PI - zbir_uglova) < tol)
+		printf("uneta tacka se nalazi unutar poligona\n");
+	else
+	printf("uneta tacka se nalazi izvan poligona\n");
+
+	printf("zbir uglova je:%lf\n", zbir_uglova);
+}

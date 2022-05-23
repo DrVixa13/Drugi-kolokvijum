@@ -1,0 +1,54 @@
+﻿Пример 2. Написати прогам у програмском језику C који за произвољан полигон који
+се задаје преко укупног броја тачака и његових X и Y координата израчунава укупну
+површину полигона
+
+
+#include <stdio.h>
+#include <math.h>
+
+float Povrsina_trougla(float a, float b, float c) {
+	float s, d, P;
+	s = (a + b + c)*0.5; /* racunamo poluobim */
+	d = (s*(s - a)*(s - b)*(s - c)); /* racunamo povrsinu */
+	P = sqrt(d);
+	return (P);
+}
+
+void main(void)
+{
+	int n, i;
+	float X[100], Y[100], XX, YY;
+	float a, b, c;
+	float Povrs;
+	printf("Unesite broj tacaka poligona: ");
+	scanf("%d", &n);
+	for (i = 0;i<n;i++)
+	{
+		printf("\n Unesite tacku broj %d: \n", i + 1);
+		scanf("%f %f", &X[i], &Y[i]);
+	}
+
+	// trazenje tezista svih tacaka poligona:
+	XX = 0.0;
+	YY = 0.0;
+	for (i = 0;i<n;i++)
+	{
+		XX = XX + X[i];
+		YY = YY + Y[i];
+	}
+	XX = XX / n;
+	YY = YY / n;
+
+	//trazenje povrsina trouglova koji se sastoje iz tezista i tacaka poligona:
+	Povrs = 0.0;
+	X[n] = X[0];
+	Y[n] = Y[0];
+	for (i = 0;i<n;i++)
+	{
+ 		a = sqrt((XX - X[i])*(XX - X[i]) + (YY - Y[i])*(YY - Y[i]));
+ 		b = sqrt((XX - X[i+1])*(XX - X[i+1]) + (YY - Y[i+1])*(YY - Y[i+1]));
+ 		c = sqrt((X[i] - X[i+1])*(X[i] - X[i+1]) + (Y[i] - Y[i+1])*(Y[i] - Y[i+1]));
+ 		Povrs = Povrs + Povrsina_trougla(a, b, c);
+	}
+	printf("\n\n ukupna povrsina poligona je %f \n", Povrs);
+}

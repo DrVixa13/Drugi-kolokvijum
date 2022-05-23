@@ -1,0 +1,33 @@
+﻿#include <stdio.h>
+#include <math.h>
+
+#define f(x) (exp(x)*log(x)-x*x)
+
+void main()
+{
+	int istep;
+	double dl=1e-6; // tolerancije
+	double a,b,x0,x1,dx; 
+
+	a = 1; b = 2; // a i b su granice pocetnog intervala
+	dx = b-a;
+	istep = 0;
+
+	while (fabs(dx) > dl)
+ 	{
+ 		x0 = (a+b)/2;
+ 		if ((f(a)*f(x0)) < 0)
+ 		{
+ 			b = x0;
+ 			dx = b-a;
+ 		}
+ 		else
+ 		{
+ 			a = x0;
+ 			dx = b-a;
+ 		}
+ 		istep = istep+1;
+ 	}
+
+	printf("Nula funkcije je %f. Do resenja se doslo u %d iteracija sa %f korakom.", x0, istep, dx);
+} 

@@ -1,0 +1,33 @@
+﻿#include <iostream>
+#include <stdio.h>
+#include <math.h>
+
+#define r 25.0
+#define a 25.0
+using namespace std;
+
+struct triD{
+   double x,y,z;};
+
+int main()
+{
+     double poz,limit = 1e-4;
+     triD centar,tacka;
+    double  R = r+a;
+    printf("Centar se nalazi u koordinatnom pocetku!\n");
+
+
+    centar.x = centar.y = centar.z = 0;
+    printf("Uneti xyz koordinate trazene tacke:\n");
+    scanf("%lf %lf %lf",&tacka.x,&tacka.y,&tacka.z);
+
+    poz = (tacka.x*tacka.x+tacka.y*tacka.y+tacka.z*tacka.z-(R*R+r*r))*(tacka.x*tacka.x+tacka.y*tacka.y+tacka.z*tacka.z-(R*R+r*r)) - 4*r*R*(r*r-tacka.z*tacka.z);
+
+    if (poz<limit)
+        printf("Data tacka se nalazi u  torusu!");
+    else printf("Data tacka se nalazi van torusa!");
+
+
+
+    return 0;
+}

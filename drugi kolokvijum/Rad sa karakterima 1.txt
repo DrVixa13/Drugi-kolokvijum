@@ -1,0 +1,102 @@
+﻿#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX_DUZINA_IMENA_DATOTEKE 100
+#define MAX_VELICINA_DATOTEKE 100000
+
+void main( void )
+{
+ 	/* prostor za unosenje naziva ulazne datoteke koju otvaramo */
+	char u_datoteka[ MAX_DUZINA_IMENA_DATOTEKE ];
+
+ 	/* prostor za unosenje naziva izlazne datoteke koju otvaramo */
+	char i_datoteka[ MAX_DUZINA_IMENA_DATOTEKE ];
+
+	/* mesto za privremeno smestanje datoteke za korigovanje*/
+	char prostor[ MAX_VELICINA_DATOTEKE ];
+
+	/* pomocna karakterna promenljiva - za citanje iz datoteke*/
+ 	char ch;
+
+ 	/* promenljive za brojace */
+ 	int i, br;
+
+ 	/* pokazivaci na ulaznu i izlaznu datoteku */
+ 	FILE *p_ulazna, *p_izlazna;
+
+ 	/* unosi se ime ulazne datoteke */
+ 	printf( "Upisi naziv ulazne datoteke:" );
+ 	scanf( "%s", u_datoteka );
+ 	fflush( stdin );
+
+ 	/* otvaramo ulaznu datoteku za citanje */
+ 	p_ulazna = fopen( u_datoteka, "r" );
+
+ 	if ( p_ulazna == NULL ) /* ako je doslo do neke greske */
+ 	{
+ 		printf( "Uneto ime datoteke ne postoji ili ne moze da se otvori!\n" );
+ 		return; /* izadji iz programa */
+ 	}
+
+ 	/* unosi se ime izlazne datoteke */
+ 	printf( "Upisi naziv izlazne datoteke:" );
+ 	scanf( "%s", i_datoteka );
+ 	fflush( stdin );
+
+ 	if ( strcmp( i_datoteka, u_datoteka ) == 0 )
+ 	{
+ 		printf("Ime ulazne i izlazne datoteke mora biti razlicito!\n");
+ 		return; 
+ 	}
+
+ 	/* otvaramo izlaznu datoteku za pisanje */
+ 	p_izlazna = fopen( i_datoteka, "w" );
+
+ 	if ( p_izlazna == NULL ) /* ako je doslo do neke greske */
+ 	{
+ 		printf( "Uneto ime datoteke ne postoji ili ne moze da se otvori!\n" );
+ 		return; /* izadji iz programa */
+ 	}
+
+ 	/* inicijalizuj brojac na NULU */
+ 	br = 0;
+
+ 	/* citaj redom karaktere sve dok ne dodjes do kraja datoteke (EOF)*/
+ 	while ( ( ch = fgetc( p_ulazna ) ) != EOF )
+ 		prostor[ ++br ] = ch; // karaktere smestaj u ovaj niz
+
+ 	// ako je ulazna datoteka prazna, nema smisla nista dalje raditi
+ 	if ( br == 0 )
+ 	{
+		 printf( "Ulazna datoteka je prazna!\n" );
+ 		return; /* izadji iz programa */
+ 	}
+
+ 	/* postavi 'i' na jedinicu */
+ 	i = 1;
+
+ 	/* Prvi znak - ako je slovo mora biti veliko */
+ 	/* Ovo je klasican izuzetak u programiranju ... */
+ 	/* ... jer u glavnoj petlji ispitujemo i prethodni karakter*/
+ 	prostor[i] = toupper( prostor[i] );
+ 	fprintf( p_izlazna, "%c", prostor[i] );
+
+ 	/* upisi u datoteku zeljene izmene... */
+ 	for ( i=2; i<=br; i++ )
+ 	{
+ 		if ( islower( prostor[i] ) != 0 )
+ 			if ( isalpha( prostor[i-1] ) == 0 )
+ 				prostor[i] = toupper( prostor[i] );
+ 		if ( isupper( prostor[i] ) != 0 )
+ 			if ( isalpha( prostor[i-1] ) != 0 )
+ 				prostor[i] = tolower( prostor[i] );
+
+ 		// Upisi u izlaznu datoteku
+ 		fprintf( p_izlazna, "%c", prostor[i] );
+ 	}
+
+ 	// Zatvaranje datoteka
+ 	fclose( p_ulazna );
+ 	fclose( p_izlazna );
+} 

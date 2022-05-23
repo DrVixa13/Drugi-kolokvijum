@@ -1,0 +1,40 @@
+﻿#include <stdio.h>
+#include <math.h>
+
+#define f(x) (exp(x)*log(x)-x*x)
+
+void main()
+{
+	int istep;
+	double dl=1e-6;
+	double a,b,xi,xf,di,df;
+	void secant (double dl, double xi, double di, double *xf, double *df, int *istep);
+
+	a = 1; b = 2;
+	di = (b-a)/10;
+	xi = (a+b)/2;
+	secant (dl,xi,di,&xf,&df,&istep);
+	printf("%4d %16.8lf %16.8lf\n", istep,xf,df);
+}
+
+void secant (double dl, double xi, double di, double *xf, double *df, int *istep) 
+{
+	double x0,x1,x2,d;
+
+	x0 = xi;
+	x1 = xi+di;
+	*df = di;
+	*istep = 0;
+
+	while (fabs(*df) > dl)
+ 	{
+ 		d = f(x1)-f(x0);
+ 		x2 = x1-f(x1)*(x1-x0)/d;
+ 		x0 = x1;
+ 		x1 = x2;
+ 		*df = x1-x0;
+ 		*istep = *istep+1;
+ 	}
+
+ 	*xf = x0;
+} 

@@ -1,0 +1,34 @@
+﻿//Пример 1. Нaписaти прогрaм у прогрaмском језику C који рачуна површину задате
+функције y=Fun(x) методом Simpsonovog правила (преко рачунања површине трапеза
+P=((Yi*Yi_1)*dx)/2), где су Yi и Yi_1 вредности функције на интервалу Xi, Xi+1, а dx је
+растојање Xi+1-Xi. Задатак тестирати на половини површине круга са центром у Xc=R.
+
+
+#include <math.h>
+#include <stdlib.h>
+
+#define Fun(x) sqrt(fabs((x)*(2.0*R-(x))))
+
+void main(void)
+{
+	int n, i;
+	float Povrs, dx, R, Yi_1, Yi, x;
+	float PI = 4.0*atan(1.0);
+	printf("Unesite broj tacaka za racunanje povrsine: ");
+	scanf("%d", &n);
+	printf("Unesite R kruga: ");
+	scanf("%f", &R);
+	Povrs = 0.0;
+	dx = 2.0*R / n;
+	x = 0.0;
+	for (i = 0; i < n; i++)
+	{
+		Yi = Fun(x);
+		Yi_1 = Fun(x + dx);
+		Povrs = Povrs + ((Yi + Yi_1)*dx / 2.0);
+		printf("x= %f, x+dx= %f, Yi= %f, Yi_1= %f \n", x, x + dx, Yi, Yi_1);
+		x = x + dx;
+	}
+	printf("\n\n ukupna povrsina zadate funkcije je %f \n", Povrs);
+	printf("\n Greska racunanja je %f \n", Povrs - 0.5*R*R*PI);
+}

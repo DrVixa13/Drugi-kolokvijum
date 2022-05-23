@@ -1,0 +1,36 @@
+﻿#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+
+void main(void)
+{
+    char datoteka[100];
+    char slovo;
+    char rec[100];
+
+    FILE *p_datoteka;
+    printf("Unesi naziv datoteke:\n");
+    scanf("%s", datoteka);
+
+    fflush(stdin);
+
+    do
+    {
+        printf("Upisi slovo: ");
+        scanf("%c", &slovo);
+    }
+    while( (isalpha( slovo )) == 0);
+    p_datoteka = fopen(datoteka, "r");
+    if (p_datoteka == NULL)
+    {
+        printf("Uneto ime datoteke ne postoji ili ne moze da se otvori!!!\n");
+        return;
+    }
+    while(fscanf(p_datoteka, "%s", rec) != EOF)
+    {
+        if(toupper(*rec) == toupper(slovo))
+            printf("%s\n", rec);
+    }
+    fclose(p_datoteka);
+}

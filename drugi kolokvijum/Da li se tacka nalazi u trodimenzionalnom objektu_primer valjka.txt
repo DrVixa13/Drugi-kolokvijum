@@ -1,0 +1,69 @@
+﻿Пример 4. Написати програм у програмском језику C који за задату тачку P(x,y,z)
+испитује да ли се тачка налази унутар ваљка који се задаје преко висине H,
+пролупречника R и нагиба према Y osi. Претпоставка је да се центар ваљка налази у
+координатном почетку.
+
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+
+struct Vector
+{
+	float x, y, z;
+};
+
+int valjak(Vector t, float r, float h)
+{
+	float poluprecnik = sqrt(t.z*t.z + t.y*t.y);
+
+	if (poluprecnik > r)
+		return 0;
+	if (t.y < -h / 2)
+		return 0;
+	if (t.y > h / 2)
+		return 0;
+	return 1;
+}
+
+void main(void)
+{
+	Vector C, T;
+	float R;
+	float ALFASTEPEN, ALFA;
+	float H;
+
+	R = 0;
+	ALFASTEPEN = 0;
+	H = 0;
+
+	printf("Unesite visinu valjka");
+	scanf("%f", &H);
+
+	printf("Unesite koordinate centra valjka");
+	scanf("%f %f %f", &C.x, &C.y, &C.z);
+
+	printf("Unesite poluprecnik valjka");
+	scanf("%f", &R);
+
+	printf("Unesite ugib prema Y osi");
+	scanf("%f", &ALFASTEPEN);
+
+	printf("Unesite koordinate tacke koja se zadaje");
+	scanf("%f %f %f", &T.x, &T.y, &T.z);
+
+	ALFA = ALFASTEPEN * 180 / 3.14;
+
+	T.x = T.x - C.x;
+	T.y = T.y - C.y;
+	T.z = T.z - C.z;
+
+	T.x = T.x * sin(-ALFA);
+	T.y = T.y * cos(-ALFA);
+
+	int Unutra = valjak(T, R, H);
+
+	if (Unutra)
+		printf("Zadata tacka je u valjku!\n");
+	else
+		printf("Zadata tacka nije u valjku!\n");
+}

@@ -1,0 +1,74 @@
+﻿#include <stdlib.h>
+#include <string>
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <conio.h>
+#pragma warning(disable : 4996)
+
+#define MAX_DUZINA_IMENA_DATOTEKE 100
+#define MAX_VELICINA_DATOTEKE 100000
+
+void main(void)
+{
+
+	char u_datoteka[MAX_DUZINA_IMENA_DATOTEKE];
+	char i_datoteka[MAX_DUZINA_IMENA_DATOTEKE];
+	char prostor[MAX_VELICINA_DATOTEKE];
+	char rec[100];
+	int i, br;
+	FILE *p_ulazna, *p_izlazna;
+
+	printf("Upisi naziv ulazne datoteke: ");
+	scanf("%s", &u_datoteka);
+	fflush(stdin);
+
+	p_ulazna = fopen(u_datoteka, "r");
+	if (p_ulazna == NULL)
+	{
+		printf("Datoteka nije pronadjena!");
+		return;
+	}
+
+	printf("Upisi naziv izlazne datoteke: ");
+	scanf("%s", i_datoteka);
+	fflush(stdin);
+
+	if (strcmp(i_datoteka, u_datoteka) == 0)
+	{
+		printf("Ime ulazne i izlazne datoteke mora biti razlicito! \n");
+		return;
+	}
+
+	p_izlazna = fopen(i_datoteka, "w");
+	if (p_izlazna == NULL)
+	{
+		printf("Datoteka nije pronadjena!");
+		return;
+	}
+
+	br = 0;
+
+	while (fscanf(p_ulazna, "%s", rec) != EOF)
+	{
+		if (rec[0] == 'A')
+		{
+			fprintf(p_izlazna, "%s ", rec);
+		}
+	}
+
+	if (br == 0)
+	{
+		printf("Ulazna datoteka je prazna! \n");
+		return;
+	}
+
+	for (i = 1; i <= br; i++)
+	{
+		fprintf(p_izlazna, "%c", prostor[i]);
+	}
+
+	printf("Gotovo! Otvorite datoteku koju ste zadali za izlaz.");
+	fclose(p_ulazna);
+	fclose(p_izlazna);
+}

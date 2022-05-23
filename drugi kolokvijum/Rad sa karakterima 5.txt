@@ -1,0 +1,50 @@
+﻿#include <string.h>
+#include <stdio.h>
+#include <ctype.h>
+
+void main(void)
+{
+ 	char datoteka[100]; /* naziv datoteke koju otvaramo */
+ 	char rec[1000][100]; /* string u koji se izdvajaju reci */
+ 	char pom[100];
+ 	FILE *p_datoteka; /* pokazivac na datoteku */
+ 	int i, j, broj;
+
+ 	/* unosi se ime datoteke, i to max do 100 karaktera */
+ 	printf( "Upisi naziv datoteke:" );
+ 	scanf( "%s", datoteka );
+
+ 	p_datoteka = fopen( datoteka, "r" ); /* otvaramo datoteku za citanje*/
+
+ 	if ( p_datoteka == NULL ) /* ako je doslo do neke greske */
+ 	{
+ 		printf( "Uneto ime datoteke ne postoji ili ne moze da se otvori!\n" );
+ 		return; /* izadji iz programa*/
+ 	}
+
+ 	/* citaj redom strigove (reci) sve dok ne dodjes do kraja datoteke (EOF)*/
+ 	/* istovremeno stavljaj ih redom u niz...*/
+ 	for ( broj=0; fscanf( p_datoteka, "%s", rec[broj] ) != EOF; broj++ );
+
+ 	/* Umanji broj reci za jedan (ovo je trik)*/
+ 	--broj;
+
+ 	/* klasican bubble-sort */
+ 	for ( i=0; i<=broj-1; i++ )
+ 		for ( j=i+1; j<=broj; j++ )
+ 		{
+ 			if ( strcmp( rec[i], rec[j] ) > 0 )
+ 			{
+ 				strcpy( pom, rec[j] );
+ 				strcpy( rec[j], rec[i] );
+ 				strcpy( rec[i], pom );
+ 			}
+ 		}
+
+ 	/* ispisi rezultat na ekran */
+ 	for ( i=0; i<=broj; i++ )
+ 		printf( "%s\n", rec[i] ); 
+
+ 	/* zatvori datoteku */
+ 	fclose( p_datoteka );
+}

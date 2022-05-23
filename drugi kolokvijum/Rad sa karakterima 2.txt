@@ -1,0 +1,101 @@
+﻿/* '#include' i '#define' su predprocesorske direktive */
+#include <string.h> /* ... za rad sa stringovima */
+#include <stdio.h> /* ... za standardni ulaz i izlaz */
+#include <ctype.h> /* ... za neke druge funkcije npr.'toupper'*/
+
+/* definiija maksimalne velicine datoteke - 100000 karaktera */
+#define MAX_VELICINA_DATOTEKE 100000
+
+/* 'main' je oznaka za pocetak glavne funkcije, odnosno programa */
+void main( void )
+{
+ 	/* predvidjeni memorijski prostor za naziv datoteke koju otvaramo */
+ 	/* u nasem slucaju 100 karaktera*/
+ 	char datoteka[100];
+
+ 	/* karakterna promenljiva za izbor, u koju cemo uneti...
+ 		... oznaku za mala ili velikaslova */
+ 	char izbor;
+
+ 	/* Pomocne promenljive */
+ 	char ch;
+ 	int i, br;
+
+ 	/* memorijski prostor za privremeno smestanje korigovane datoteke...*/
+ 	char prostor[ MAX_VELICINA_DATOTEKE ];
+
+ 	/* pointer na datoteku */
+ 	FILE *p_datoteka;
+
+ 	/* 'printf' ispisuje tekst na ekranu ... */
+	printf( "Upisi naziv datoteke:" );
+ 	/* Unosi se ime datoteke*/
+ 	scanf( "%s", datoteka );
+
+ 	fflush( stdin );
+
+ 	/* 'fopen' otvara datoteku za citanje (READ)- "r" */
+ 	p_datoteka = fopen( datoteka, "r" );
+
+ 	/* ako je doslo do neke greske (== NULL) ... */
+ 	if ( p_datoteka == NULL )
+ 	{
+ 		printf( "Uneto ime datoteke ne postoji ili ne moze da se otvori!\n" );
+ 		return; /* izadji iz programa*/
+ 	}
+
+ 	/* Meni za unos izbora*/
+ 	printf( "Meni:\n"
+ 		"V - pretvori sve u velika slova\n"
+ 		"M - pretvori sve u mala slova\n\n"
+ 		"Izbor? :" ); 
+ 	scanf( "%c", &izbor );
+
+ 	fflush( stdin );
+
+ 	// uneti karakter pretvara u veliko slovo
+ 	izbor = toupper( izbor );
+
+ 	/* Ako nismo upisali zeljeno slovo */
+ 	if ( izbor != 'V' && izbor != 'M' )
+ 	{
+ 		printf( "Nije uneto odgovarajuce slovo!\n" );
+ 		return; /* izadji iz programa*/
+ 	}
+
+ 	/* inicijalizujemo brojac na NULU */
+	br = 0;
+
+ 	/* while petlja*/
+ 	while ( ( ( ch = fgetc( p_datoteka ) ) != EOF ) && ( br < MAX_VELICINA_DATOTEKE ) )
+ 	{
+ 		/* Menjamo mala u VELIKA ili VELIKA u mala */
+ 		if ( izbor == 'V' ) ch = toupper( ch );
+ 		else ch = tolower( ch );
+		/* izmenu belezimo u nizu */
+ 		prostor[ ++br ] = ch;
+ 	}
+
+ 	/* 'fclose' zatvara datoteku na koju pokazuje POINTER p_datoteka*/
+ 	fclose( p_datoteka );
+
+ 	/* inicijalizujemo pointer na NULU za svaki slucaj */
+ 	p_datoteka = NULL;
+
+ 	/* otvaramo datoteku ali ovoga puta za pisanje ("w") */
+ 	p_datoteka = fopen( datoteka, "w" );
+
+ 	/* ako je doslo do neke greske (== NULL) ... */
+ 	if ( p_datoteka == NULL )
+ 	{
+ 		printf( "Datoteke ne moze da se otvori za pisanje!\n" );
+ 		return; /* izadji iz programa*/
+ 	}
+
+ 	/* upisujemo iz karakternog niza 'prostor[]' izmenjenu datoteku*/
+ 	for ( i=1; i<=br; i++ )
+ 		fprintf( p_datoteka, "%c", prostor[i] );
+
+ 	/* zatvoramo (fclose) datoteku */
+ 	fclose( p_datoteka );
+} 

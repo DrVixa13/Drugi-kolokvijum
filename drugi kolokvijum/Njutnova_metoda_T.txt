@@ -1,0 +1,35 @@
+#include<stdio.h>
+#include<math.h>
+#include<conio.h>
+#pragma warning(disable : 4996)
+
+float f(float x)
+{
+	return x*x - 5;
+}
+float df(float x)
+{
+	return 2 * x;
+}
+int main()
+{
+	int itr, maxmitr;
+	float h, x0, x1, allerr;
+	printf("\nUnesi x0, dozvoljenu gresku i maksimalne iteracije \n");
+	scanf("%f %f %d", &x0, &allerr, &maxmitr);
+	for (itr = 1; itr <= maxmitr; itr++)
+	{
+		h = f(x0) / df(x0);
+		x1 = x0 - h;
+		printf(" U iteraciji %3d, x = %9.6f\n", itr, x1);
+		if (fabs(h) < allerr)
+		{
+			printf("Posle %3d iteracija, koren = %8.6f\n", itr, x1);
+			return 0;
+		}
+		x0 = x1;
+	}
+	printf(" Iteracije su nedovoljne ili funkcija ne konvergira\n");
+	getch();
+	return 0;
+}

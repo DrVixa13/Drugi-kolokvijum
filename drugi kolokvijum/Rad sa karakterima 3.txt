@@ -1,0 +1,79 @@
+﻿#include <string.h>
+#include <stdio.h>
+#include <ctype.h>
+
+#define MAX_VELICINA_DATOTEKE 100000
+
+void main( void )
+{
+ 	char datoteka[100]; /* naziv datoteke koju otvaramo */
+ 	char broj; /* broj blanko karaktera koji zelimo da umetnemo*/
+
+ 	/* Pomocne promenljive */
+ 	char ch;
+ 	int i, br;
+
+ 	/* mesto za privremeno smestanje korigovane datoteke */
+ 	char prostor[ MAX_VELICINA_DATOTEKE ];
+
+ 	FILE *p_datoteka; /* pokazivac na datoteku koju otvaramo */
+
+ 	/* unosi se ime datoteke, i to max do 100 karaktera */
+ 	printf( "Upisi naziv datoteke:" );
+ 	scanf( "%s", datoteka );
+ 	fflush( stdin );
+
+ 	/* otvaramo datoteku za citanje */
+ 	p_datoteka = fopen( datoteka, "r" );
+
+ 	if ( p_datoteka == NULL ) /* ako je doslo do neke greske */
+ 	{
+ 		printf( "Uneto ime datoteke ne postoji ili ne moze da se otvori!\n" );
+ 		return; /* izadji iz programa*/
+ 	}
+
+ 	/* unosi slovo koje ce mo da ispitujemo */
+ 	do
+ 	{
+ 		printf( "Upisi broj blanko karaktera za zamenu tabulatora:" );
+ 		scanf( "%c", &broj );
+ 		fflush( stdin );
+ 	} /* ako nismo uneli slovo, vraca nas ponovo na unos */
+	while ( isdigit( broj ) == 0 );
+
+ 	/* inicijalizujemo brojac na NULU */
+ 	br = 0;
+
+ 	/* Radi dok god ne dosegnemo kraj datoteke */
+ 	while ( ( ch = fgetc( p_datoteka ) ) != EOF )
+ 	{
+ 		/* Ako smo naisli na znak za tabulator... */
+ 		if ( ch == '\t' ) 
+ 			for ( i = 1; i <= broj - '0'; i++ ) prostor[ ++br ] = ' ';
+ 		else /* a ako nismo... */
+ 			prostor[ ++br ] = ch;
+ 	}
+
+ 	/* zatvori datoteku */
+	fclose( p_datoteka );
+
+ 	/* inicijalizujemo pointer na NULU za svaki slucaj */
+ 	/* jer ce mo ponovo otvarati datoteku */
+ 	p_datoteka = NULL;
+
+ 	/* otvaramo datoteku ali ovoga puta za pisanje */
+ 	p_datoteka = fopen( datoteka, "w" );
+
+ 	if ( p_datoteka == NULL ) /* ako je doslo do neke greske */
+ 	{
+ 		printf( "Datoteke ne moze da se otvori za pisanje!\n" );
+ 		return; /* izadji iz programa*/
+ 	}
+
+ 	/* upisi u datoteku zeljene izmene... */
+ 	for ( i=1; i<=br; i++ )
+ 		fprintf( p_datoteka, "%c", prostor[i] );
+
+ 	/* zatvori datoteku */
+ 	fclose( p_datoteka );
+} 

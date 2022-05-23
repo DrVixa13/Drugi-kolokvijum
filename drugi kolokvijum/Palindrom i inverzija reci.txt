@@ -1,0 +1,86 @@
+﻿#include <stdlib.h>
+#include <string>
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+#include <ctype.h>
+#include <conio.h>
+#pragma warning(disable : 4996)
+
+#define MAX_DUZINA_IMENA_DATOTEKE 100
+#define MAX_VELICINA_DATOTEKE 100000
+
+bool isPalindrome(char str[])
+{
+	// Start from leftmost and rightmost corners of str 
+	int l = 0;
+	int h = strlen(str) - 1;
+
+	// Keep comparing characters while they are same 
+	while (h > l)
+	{
+		if (str[l++] != str[h--])
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+void main(void)
+{
+
+	char u_datoteka[MAX_DUZINA_IMENA_DATOTEKE];
+	char i_datoteka[MAX_DUZINA_IMENA_DATOTEKE];
+	char prostor[MAX_VELICINA_DATOTEKE];
+	char rec[1000];
+	int i, br;
+	FILE *p_ulazna, *p_izlazna;
+
+	printf("Upisi naziv ulazne datoteke: ");
+	scanf("%s", &u_datoteka);
+	fflush(stdin);
+
+	p_ulazna = fopen(u_datoteka, "r");
+	if (p_ulazna == NULL)
+	{
+		printf("Datoteka nije pronadjena!");
+		return;
+	}
+
+	printf("Upisi naziv izlazne datoteke: ");
+	scanf("%s", i_datoteka);
+	fflush(stdin);
+
+	if (strcmp(i_datoteka, u_datoteka) == 0)
+	{
+		printf("Ime ulazne i izlazne datoteke mora biti razlicito! \n");
+		return;
+	}
+
+	p_izlazna = fopen(i_datoteka, "w");
+	if (p_izlazna == NULL)
+	{
+		printf("Datoteka nije pronadjena!");
+		return;
+	}
+
+	br = 0;
+	i = 1;
+
+	while (fscanf(p_ulazna, "%s", rec) != EOF)
+	{
+		if (isPalindrome(rec) == true)
+		{
+			br++;
+			fprintf(p_izlazna, "%s", rec);
+		}
+		else
+			fprintf(p_izlazna, "%s", strrev(rec));
+	}
+
+	fprintf(p_izlazna, "\nBroj palindroma je: %d", br);
+
+	fclose(p_ulazna);
+	fclose(p_izlazna);
+}

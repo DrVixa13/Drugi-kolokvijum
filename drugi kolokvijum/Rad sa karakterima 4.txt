@@ -1,0 +1,44 @@
+﻿#include <string.h>
+#include <stdio.h>
+#include <ctype.h>
+
+void main(void)
+{
+ 	char datoteka[100]; /* naziv datoteke koju otvaramo */
+ 	char slovo; /* karakter (slovo) koje zelimo da ispitujemo */
+ 	char rec[100]; /* string u koji se izdvajaju reci */
+ 	FILE *p_datoteka; /* pokazivac na datoteku */
+
+ 	/* unosi se ime datoteke, i to max do 100 karaktera */
+ 	printf( "Upisi naziv datoteke:" );
+ 	scanf( "%s", datoteka );
+
+ 	fflush(stdin);
+
+ 	/* unosi slovo koje ce mo da ispitujemo */
+ 	do
+ 	{
+ 		printf( "Upisi slovo:" );
+ 		scanf( "%c", &slovo );
+ 	} /* ako nismo uneli slovo, vraca nas ponovo na unos */
+ 	while ( isalpha( slovo ) == 0 );
+
+ 	p_datoteka = fopen( datoteka, "r" ); /* otvaramo datoteku za citanje*/
+
+ 	if ( p_datoteka == NULL ) /* ako je doslo do neke greske */
+ 	{
+ 		 printf( "Uneto ime datoteke ne postoji ili ne moze da se otvori!\n" );
+ 	return; /* izadji iz programa*/
+ 	}
+
+ 	/* citaj redom strigove (reci) sve dok ne dodjes do kraja datoteke (EOF)*/
+ 	while ( fscanf( p_datoteka, "%s", rec ) != EOF )
+ 	{
+ 		/*Ako je prvo slovo u reci jednako nasem slovu koje smo uneli,
+ 		stampaj tu rec. Slova se interno prebacuju u velika...*/
+ 		if ( toupper( *rec ) == toupper( slovo ) ) printf( "%s\n", rec );
+ 	}
+
+ 	/* zatvori datoteku */
+ 	fclose( p_datoteka );
+} 

@@ -1,0 +1,85 @@
+﻿*5x1 + 2x2 + x3 = 12
+x1 + 4x2 + 2x3 = 15
+x1 + 2x2 + 5x3 = 20*
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <math.h>
+
+#define Limit 20
+
+void main(void)
+{
+	double tol = 10E-6, sep = 1.0;
+	int k = 1, cond = 1, r, c, j, max = 99, n;
+	double a[Limit][Limit], b[Limit];
+	double row, p[Limit], pNew[Limit], sum;
+
+	do
+	{
+		printf("Unesite broj jednacina [Ne vise od %d]\n", Limit);
+		scanf_s("%d", &n);
+	} while (n > Limit);
+
+	printf("---------------------------------------\n");
+	printf("Od Ax = B unesite komponente vekora B jedan po jedan: \n");
+	for (r = 1; r <= n; r++)
+	{
+		printf("Unesite %d komponentu vektora B\n", r);
+		scanf_s("%lf", &b[r - 1]);
+	}
+
+	printf("---------------------------------------\n");
+	printf("Od Ax = B unesite elemente od A red po red: \n");
+	printf("---------------------------------------\n");
+	for (r = 1; r <= n; r++)
+	{
+		for (j = 1; j <= n; j++)
+		{
+			printf("Za red %d unesite element %d: \n", r, j);
+			scanf_s("%lf", &a[r - 1][j - 1]);
+		}
+	}
+
+	for (r = 1; r <= n; r++)
+	{
+		row = 0.0;
+		for (c = 1; c <= n; c++) row += fabs(a[r - 1][c - 1]);
+		if (row >= 2.0 * fabs(a[r - 1][r - 1])) cond = 0;
+	}
+
+	if (cond == 0)
+	{
+		printf("Matrica nije dijagonalno dominantna. \n");
+		printf("Nije moguce primeniti ovaj algoritam ----> izlaz \n");
+		exit(1);
+	}
+
+	for (j = 0; j < n; j++)
+	{
+		p[j] = 0;
+		pNew[j] = 0;
+	}
+
+	while ((k < max) && (sep > tol))
+	{
+		for (r = 1; r <= n; r++)
+		{
+			sum = b[r - 1];
+			for (c = 1; c <= n; c++) if (c != r) sum -= a[r - 1][c - 1] * p[c - 1];
+			pNew[r - 1] = sum / a[r - 1][r - 1];
+		}
+		sep = 0;
+		for (j = 1; j <= n; j++) sep += fabs(pNew[j - 1] - p[j - 1]);
+		for (j = 1; j <= n; j++) p[j - 1] = pNew[j - 1];
+		k++;
+	}
+
+	printf("Broj iteracija %d \n", k);
+	if (sep < tol) printf("Resenje linearnog sistema je: \n");
+	else printf("Jakobi iteracija nije konvergirala: \n");
+	for (j = 1; j <= n; j++) printf("P[%d] = %lf\n", j, p[j - 1]);
+
+	_getch();
+}

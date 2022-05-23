@@ -1,0 +1,55 @@
+﻿#include <iostream>
+#include <stdio.h>
+#include <math.h>
+
+#define pi (4*atan(1.0))
+
+using namespace std;
+
+double p_lopte(double r)
+{
+
+	return 4*r*r*pi;}
+struct Vektor{
+	double x,y,z;
+};
+
+int main(){
+    double r,a,b,c,d;
+	Vektor centar1,presek,centar2;
+	centar1.x = 0;
+	centar1.y = 0;
+	centar1.z = 0;
+
+	double poluprecnik;
+	double D;
+	double povrs ;
+
+	printf("Uneti poluprecnik lopte: ");
+	scanf("%lf",&r);
+
+	printf("Uneti redom koeficijente ravni:\n");
+	scanf("%lf %lf %lf %lf", &a,&b,&c,&d);
+
+	
+	printf("Uneti koordiante tacke preseka:\n ");
+	scanf("%lf %lf %lf", &presek.x,&presek.y,&presek.z);
+
+	double pr = a*a+b*b+c*c;
+
+	centar2.x = (presek.x-(a*presek.x+b*presek.y+c*presek.z+d))/pr;
+	centar2.y = (presek.y-(a*presek.x+b*presek.y+c*presek.z+d))/pr;
+	centar2.z = (presek.z-(a*presek.x+b*presek.y+c*presek.z+d))/pr;
+
+	D = fabs(a*centar2.x+b*centar2.y+c*centar2.z+d)/sqrt(pr);
+
+	poluprecnik = sqrt((presek.x-centar2.x)*(presek.x-centar2.x)+(presek.y-centar2.y)*(presek.y-centar2.y)+(presek.z-centar2.z)*(presek.z-centar2.z));
+	povrs = 2*(r-D)*pi*poluprecnik;
+
+	printf("Povrsina cele lopte je:%lf\n",p_lopte(r));
+	printf("Povrsina odsecene lopte je:%lf\n",povrs);
+
+
+
+	return 0;
+}

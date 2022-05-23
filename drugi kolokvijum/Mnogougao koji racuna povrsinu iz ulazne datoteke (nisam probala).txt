@@ -1,0 +1,65 @@
+Mnogougao n koji racuna povrsinu iz ulazne datoteke ako je mnogougao konveksan:
+#include<stdio.h>
+#include<math.h>
+
+int isConvex(int x[],int y[],int n)
+{ int i;
+if (n < 4)
+return 1;
+
+int sign = 0;
+i=0;
+double dx1 = x[(i + 2) % n] - x[(i + 1) % n];
+double dy1 = y[(i + 2) % n] - y[(i + 1) % n];
+double dx2 = x[i] - x[(i + 1) % n];
+double dy2 = y[i] - y[(i + 1) % n];
+double zcrossproduct = dx1 * dy2 - dy1 * dx2;
+
+if(zcrossproduct > 0) sign=1;
+else sign=0;
+
+for(i = 1; i < n; i++)
+{
+dx1 = x[(i + 2) % n] - x[(i + 1) % n];
+dy1 = y[(i + 2) % n] - y[(i + 1) % n];
+dx2 = x[i] - x[(i + 1) % n];
+dy2 = y[i] - y[(i + 1) % n];
+zcrossproduct = dx1 * dy2 - dy1 * dx2;
+
+if (((sign==0)&&(zcrossproduct > 0))||((sign==1)&&(zcrossproduct < 0)))
+return 0;
+}
+
+return 1;
+}
+
+double polygonArea(int X[], int Y[], int n)
+{
+double area = 0.0;
+int i;
+int j = n - 1;
+for ( i = 0; i < n; i++)
+{
+area += (((double)X[j]) + ((double)X[i])) * (((double)Y[j]) - ((double)Y[i]));
+j = i; 
+}
+
+return fabs(area / 2.0);
+}
+main(){
+int x[100],y[100],n=0,i;
+FILE*datoteka;
+datoteka=fopen("ulaz.txt","r");
+
+while((fscanf(datoteka,"%d %d",&x[n],&y[n]))!=EOF)
+{
+n++;
+}
+if(isConvex(x,y,n)==1){
+printf("\nPovrsina mnogougla je %f",polygonArea(x,y,n));
+}
+else 
+{
+printf("\nMnogougao nije konveksan");
+}
+}

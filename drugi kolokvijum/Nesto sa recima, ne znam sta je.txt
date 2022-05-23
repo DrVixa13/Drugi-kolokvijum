@@ -1,0 +1,43 @@
+﻿#include <stdio.h>
+#include <stdio.h>
+#include <ctype.h>
+
+void main()
+{
+    char datoteka[100];
+    char rec[1000][100];
+    char pom[100];
+
+    FILE *p_datoteka;
+    int i, j, broj;
+
+    printf("Unesi ime datoteke: ");
+    scanf("%s", datoteka);
+
+    p_datoteka = fopen(datoteka, "r");
+
+    if(p_datoteka == NULL)
+    {
+        printf("Uneta datoteka ne postoji ili ne moze da se otvori\n!!!");
+        return;
+    }
+    for( broj = 0; fscanf(p_datoteka, "%c", rec[broj]) != EOF; broj++)
+        --broj;
+
+    for(i = 0; i <= broj - 1; i++)
+        for(j = i+1; j <= broj; j++)
+        {
+            if(strcmp(rec[i], rec[j]) > 0)
+            {
+                strcpy( pom, rec[j] );
+                strcpy( rec[j], rec[i] );
+                strcpy( rec[i], pom );
+            }
+        }
+
+        for( i = 0; i <= broj; i++)
+            printf("%c\n", rec[i]);
+
+        fclose(p_datoteka);
+
+}

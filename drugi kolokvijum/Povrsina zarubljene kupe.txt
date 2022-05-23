@@ -1,0 +1,30 @@
+﻿#include <iostream>
+#include <math.h>
+#include <stdio.h>
+#include <conio.h>
+
+
+int main()
+{
+	float r, R, h, S, M, P;
+	float  b1, b2;
+	float Pi = 3.14;
+	printf_s("Unesite R: \n");
+	scanf_s("%f", &R);
+	printf_s("Unesite r: \n");
+	scanf_s("%f", &r);
+	printf_s("Unesite h: \n");
+	scanf_s("%f", &h);
+	S = sqrt(pow((R-r),2) + pow(h,2));
+	M = S * (r + R) * Pi;
+	printf_s("Povrsina omotaca kupe je: \n");
+	printf_s("%f", M);
+	b1 = pow(r,2) * Pi;
+	b2 = pow(R,2) * Pi;
+	P = M + b1 + b2;
+	printf_s("\nPovrsina zarubljene kupe je: %f", P);
+
+	_getch();
+
+	return 0;
+}

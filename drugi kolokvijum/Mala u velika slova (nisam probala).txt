@@ -1,0 +1,50 @@
+﻿#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#define MAX_VELICINA_DATOTEKE 10000
+
+
+FILE *p_datoteka;
+char datoteka[100];
+char ch;
+char izbor;
+int br = 0, i;
+char prostor[10000];
+int main(void)
+{
+    printf("Unesi ime datoteke\n");
+    scanf("%s", &datoteka);
+    p_datoteka = fopen(datoteka,"r");
+    while(p_datoteka == NULL)
+        {
+            printf("uneta datoteka ne postoji \n");
+            printf("Unesi ime datoteke\n");
+            scanf("%s", &datoteka);
+            p_datoteka = fopen(datoteka,"r");
+        }
+    printf("Meni: \n"
+    "V-pretvori sve u velika slova \n"
+    "M-pretvori sve u mala slova\n"
+    "Izbor?:\n ");
+    scanf("%s", &izbor);
+    while( ( (ch = fgetc(p_datoteka)) != EOF ) && (br < MAX_VELICINA_DATOTEKE) )
+    {
+        if(izbor == 'V')
+        {
+            ch = toupper(ch);
+        }
+        else
+        {
+            ch = tolower(ch);
+        }
+        prostor[++br]=ch;
+    }
+    fclose(p_datoteka);
+    p_datoteka = fopen(datoteka,"w");
+    for (i = 1; i < br + 1; ++i)
+    {
+        fprintf(p_datoteka, "%c" ,prostor[i]);
+    }
+    fclose(p_datoteka);
+    return 1;
+}

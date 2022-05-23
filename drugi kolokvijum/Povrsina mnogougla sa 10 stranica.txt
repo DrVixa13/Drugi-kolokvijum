@@ -1,0 +1,59 @@
+﻿// Zadatak 3.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <stdio.h>
+#include <math.h>
+#include <SDKDDKVer.h>
+#pragma warning(disable : 4996)
+
+float Povrsina_trougla(float a, float b, float c){
+	float s;
+	float d;
+	float P;
+	s = (a + b + c)*0.5; /* Poluobim */
+	d = (s*(s - a)*(s - b)*(s - c)); /* Povrsin */
+	P = sqrt(d);
+	return (P);
+}
+
+int main()//int _tmain(int argc, _TCHAR* argv[])
+{
+	int n = 10; // 10 tacaka jer je mnogougao od 10 stranica
+	int i;
+	float X[100], Y[100], XX, YY;
+	float a, b, c;
+	float Povrsina;
+
+
+
+	for (i = 0; i<n; i++){
+		printf("\n Unesite tacku broj %d: \n", i + 1);
+		scanf("%f %f", &X[i], &Y[i]);
+	}
+
+	// Tezista svih tacaka poligona:
+	XX = 0.0;
+	YY = 0.0;
+	for (i = 0; i<n; i++){
+		XX = XX + X[i];
+		YY = YY + Y[i];
+	}
+	XX = XX / n;
+	YY = YY / n;
+
+	// Povrsina trouglova koji se sastoje iz tezista i tacaka poligona:
+	Povrsina = 0.0;
+	X[n] = X[0];
+	Y[n] = Y[0];
+	for (i = 0; i<n; i++){
+		a = sqrt((XX - X[i])*(XX - X[i]) + (YY - Y[i])*(YY - Y[i]));
+		b = sqrt((XX - X[i + 1])*(XX - X[i + 1]) + (YY - Y[i + 1])*(YY - Y[i + 1]));
+		c = sqrt((X[i] - X[i + 1])*(X[i] - X[i + 1]) + (Y[i] - Y[i + 1])*(Y[i] - Y[i + 1]));
+		Povrsina = Povrsina + Povrsina_trougla(a, b, c);
+	}
+
+	printf("\n\n Ukupna povrsina mnogougla je %f \n", Povrsina);
+
+	return 0;
+}
